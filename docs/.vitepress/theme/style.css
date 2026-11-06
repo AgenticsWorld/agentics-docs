@@ -1,0 +1,825 @@
+/* Agentics look for VitePress, after agentics.world (agentics-front/www-agentics/src/assets/base.css and the
+   WorldOS page): black and white, Montserrat for headings, brand and buttons, Inter for everything people read,
+   the system monospace only for short UI text (nav and footer links, labels). Dark by default, like the WorldOS
+   pages; the light theme is the same design inverted. */
+
+:root {
+  --ag-font-heading: 'Montserrat Variable', 'Montserrat', 'Inter Variable', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --ag-line: rgba(0, 0, 0, 0.14);
+  --ag-line-strong: rgba(0, 0, 0, 0.4);
+  --ag-hover: rgba(0, 0, 0, 0.04);
+
+  --vp-font-family-base: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans', 'Microsoft YaHei', sans-serif;
+  --vp-font-family-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --vp-c-white: #ffffff;
+  --vp-c-black: #000000;
+
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f7f7f7;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-bg-soft: #f2f2f2;
+
+  --vp-c-text-1: #000000;
+  --vp-c-text-2: rgba(0, 0, 0, 0.72);
+  --vp-c-text-3: #6e6e6e;
+
+  --vp-c-divider: rgba(0, 0, 0, 0.12);
+  --vp-c-border: rgba(0, 0, 0, 0.18);
+  --vp-c-gutter: rgba(0, 0, 0, 0.08);
+
+  --vp-c-brand-1: #000000;
+  --vp-c-brand-2: #333333;
+  --vp-c-brand-3: #000000;
+  --vp-c-brand-soft: rgba(0, 0, 0, 0.08);
+
+  --vp-c-default-1: #6e6e6e;
+  --vp-c-default-2: #c8c8c8;
+  --vp-c-default-3: #dcdcdc;
+  --vp-c-default-soft: rgba(0, 0, 0, 0.06);
+
+  --vp-c-tip-1: var(--vp-c-text-1);
+  --vp-c-tip-2: var(--vp-c-text-2);
+  --vp-c-tip-3: var(--vp-c-text-1);
+  --vp-c-tip-soft: rgba(0, 0, 0, 0.04);
+
+  --vp-code-block-bg: #f4f4f4;
+  --vp-code-bg: rgba(0, 0, 0, 0.06);
+  --vp-code-color: #000000;
+
+  --vp-button-brand-bg: #000000;
+  --vp-button-brand-text: #ffffff;
+  --vp-button-brand-border: #000000;
+  --vp-button-brand-hover-bg: #ffffff;
+  --vp-button-brand-hover-text: #000000;
+  --vp-button-brand-hover-border: #000000;
+
+  --vp-nav-bg-color: rgba(255, 255, 255, 0.82);
+  --vp-local-search-highlight-bg: #000000;
+  --vp-local-search-highlight-text: #ffffff;
+
+  --vp-home-hero-name-color: var(--vp-c-text-1);
+}
+
+.dark {
+  --ag-line: rgba(255, 255, 255, 0.18);
+  --ag-line-strong: rgba(255, 255, 255, 0.4);
+  --ag-hover: rgba(255, 255, 255, 0.06);
+
+  --vp-c-bg: #000000;
+  --vp-c-bg-alt: #000000;
+  --vp-c-bg-elv: #0d0d0d;
+  --vp-c-bg-soft: #111111;
+
+  --vp-c-text-1: #ffffff;
+  --vp-c-text-2: rgba(255, 255, 255, 0.75);
+  --vp-c-text-3: #888888;
+
+  --vp-c-divider: rgba(255, 255, 255, 0.12);
+  --vp-c-border: rgba(255, 255, 255, 0.18);
+  --vp-c-gutter: #000000;
+
+  --vp-c-brand-1: #ffffff;
+  --vp-c-brand-2: #d6d6d6;
+  --vp-c-brand-3: #ffffff;
+  --vp-c-brand-soft: rgba(255, 255, 255, 0.12);
+
+  --vp-c-default-1: #888888;
+  --vp-c-default-2: #3a3a3a;
+  --vp-c-default-3: #2a2a2a;
+  --vp-c-default-soft: rgba(255, 255, 255, 0.08);
+
+  --vp-c-tip-soft: rgba(255, 255, 255, 0.05);
+
+  --vp-code-block-bg: #0d0d0d;
+  --vp-code-bg: rgba(255, 255, 255, 0.1);
+  --vp-code-color: #ffffff;
+
+  --vp-button-brand-bg: #ffffff;
+  --vp-button-brand-text: #000000;
+  --vp-button-brand-border: #ffffff;
+  --vp-button-brand-hover-bg: #000000;
+  --vp-button-brand-hover-text: #ffffff;
+  --vp-button-brand-hover-border: #ffffff;
+
+  --vp-nav-bg-color: rgba(0, 0, 0, 0.72);
+  --vp-local-search-highlight-bg: #ffffff;
+  --vp-local-search-highlight-text: #000000;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Top bar ---------- */
+
+.VPNavBar:not(.home.top) .content-body,
+.VPNavBar.has-sidebar .content-body {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.VPNavBarMenuLink,
+.VPNavBarMenuGroup .text,
+.VPNavScreenMenuLink,
+.VPNavBarTranslations .text {
+  font-family: var(--vp-font-family-mono) !important;
+  font-size: 12.5px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.04em;
+}
+
+.VPNavBarMenuLink.active {
+  color: var(--vp-c-text-1) !important;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+/* The Download link is the bordered button of the WorldOS top bar */
+.VPNavBarMenuLink[href$='#download'] {
+  align-self: center;
+  height: 34px;
+  margin-left: 8px;
+  padding: 0 14px !important;
+  line-height: 30px !important;
+  border: 2px solid var(--vp-c-text-1);
+  font-family: var(--ag-font-heading) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.VPNavBarMenuLink[href$='#download']:hover {
+  background: var(--vp-c-text-1);
+  color: var(--vp-c-bg) !important;
+}
+
+.DocSearch-Button,
+.VPNavBarSearchButton {
+  border-radius: 0 !important;
+}
+
+/* ---------- Sidebar ---------- */
+
+.VPSidebar {
+  border-right: 1px solid var(--vp-c-divider);
+}
+
+.VPSidebarItem.level-0 > .item > .link > .text,
+.VPSidebarItem.level-0 > .item > .text {
+  font-family: var(--ag-font-heading);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Same gap under every section, open, collapsed or empty */
+.VPSidebar .VPSidebarItem.level-0 {
+  padding-bottom: 12px !important;
+}
+
+.VPSidebarItem .text {
+  font-size: 14px;
+}
+
+.VPSidebarItem.is-active > .item > .link > .text {
+  color: var(--vp-c-text-1);
+  font-weight: 600;
+}
+
+.VPSidebarItem.level-1.is-active > .item .indicator,
+.VPSidebarItem.level-2.is-active > .item .indicator {
+  background-color: var(--vp-c-text-1);
+}
+
+/* ---------- Doc content ---------- */
+
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3,
+.vp-doc h4 {
+  font-family: var(--ag-font-heading);
+  letter-spacing: 0.01em;
+}
+
+.vp-doc h1 {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.vp-doc h2 {
+  font-weight: 700;
+  border-top-color: var(--vp-c-divider);
+}
+
+.vp-doc h3 {
+  font-weight: 700;
+}
+
+.vp-doc p,
+.vp-doc li {
+  line-height: 1.8;
+}
+
+.vp-doc a {
+  color: var(--vp-c-text-1);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--ag-line-strong);
+  text-underline-offset: 3px;
+}
+
+.vp-doc a:hover {
+  color: var(--vp-c-text-1);
+  text-decoration-color: currentColor;
+}
+
+.vp-doc .header-anchor {
+  text-decoration: none;
+}
+
+.vp-doc table {
+  display: table;
+  width: 100%;
+}
+
+.vp-doc tr {
+  border-top-color: var(--vp-c-divider);
+  background-color: transparent;
+}
+
+.vp-doc tr:nth-child(2n) {
+  background-color: var(--ag-hover);
+}
+
+.vp-doc th,
+.vp-doc td {
+  border-color: var(--vp-c-divider);
+}
+
+.vp-doc th {
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background-color: transparent;
+}
+
+.vp-doc blockquote {
+  border-left: 2px solid var(--vp-c-text-1);
+}
+
+.vp-doc div[class*='language-'] {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 0 !important;
+}
+
+.vp-doc img {
+  border: 1px solid var(--vp-c-divider);
+}
+
+/* Callouts: square, outlined, monochrome for notes and tips; warning and danger keep a colour. */
+.custom-block {
+  border-radius: 0;
+  border: 1px solid var(--ag-line);
+  border-left-width: 3px;
+}
+
+.custom-block.info,
+.custom-block.tip,
+.custom-block.note {
+  border-left-color: var(--vp-c-text-1);
+  background-color: var(--vp-c-tip-soft);
+}
+
+.custom-block.warning {
+  border-left-color: var(--vp-c-warning-1);
+}
+
+.custom-block.danger,
+.custom-block.caution {
+  border-left-color: var(--vp-c-danger-1);
+}
+
+.custom-block .custom-block-title {
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.custom-block a {
+  color: inherit;
+}
+
+/* Outline on the right */
+.VPDocAsideOutline .outline-title {
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vp-c-text-3);
+}
+
+.VPDocAsideOutline .outline-link.active {
+  color: var(--vp-c-text-1);
+  font-weight: 600;
+}
+
+.VPDocAsideOutline .outline-marker {
+  background-color: var(--vp-c-text-1);
+}
+
+/* Prev / next */
+.VPDocFooter .pager-link {
+  border-radius: 0;
+  border-color: var(--ag-line);
+}
+
+.VPDocFooter .pager-link:hover {
+  border-color: var(--vp-c-text-1);
+}
+
+.VPDocFooter .pager-link .desc {
+  font-family: var(--vp-font-family-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.VPDocFooter .pager-link .title {
+  color: var(--vp-c-text-1);
+}
+
+.VPDocFooter .edit-link-button {
+  color: var(--vp-c-text-2);
+}
+
+/* Square buttons and inputs like the rest of agentics.world */
+.VPButton,
+.VPLocalSearchBox .shell,
+.VPLocalSearchBox .search-bar,
+.VPLocalSearchBox .result {
+  border-radius: 0 !important;
+}
+
+/* ---------- Shared bits used by the theme components ---------- */
+
+.ag-label {
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vp-c-text-3);
+}
+
+.ag-draft {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 0 6px;
+  border: 1px dashed currentColor;
+  font-family: var(--vp-font-family-mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  color: var(--vp-c-warning-1);
+}
+
+.ag-empty {
+  margin: 32px 0;
+  padding: 28px;
+  border: 1px dashed var(--ag-line);
+  font-size: 14px;
+  color: var(--vp-c-text-3);
+  text-align: center;
+}
+
+/* Category trail above a doc */
+.ag-docmeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vp-c-text-3);
+}
+
+.ag-docmeta a {
+  color: var(--vp-c-text-3);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ag-docmeta a:hover {
+  color: var(--vp-c-text-1);
+}
+
+/* Tag chip, like the status badges on the WorldOS page */
+.ag-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 8px;
+  border: 1px solid var(--ag-line-strong);
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.04em;
+  color: var(--vp-c-text-1) !important;
+  text-decoration: none !important;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.ag-tag:hover {
+  border-color: var(--vp-c-text-1);
+  background: var(--vp-c-text-1);
+  color: var(--vp-c-bg) !important;
+}
+
+.ag-tag__hash {
+  color: var(--vp-c-text-3);
+}
+
+.ag-tag:hover .ag-tag__hash {
+  color: inherit;
+}
+
+.ag-tag__count {
+  margin-left: 6px;
+  color: var(--vp-c-text-3);
+}
+
+.ag-tag:hover .ag-tag__count {
+  color: inherit;
+}
+
+.ag-doctags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.ag-doctags .ag-label {
+  margin-right: 4px;
+}
+
+/* Doc cards on category and tag pages */
+.ag-doclist,
+.vp-doc .ag-doclist {
+  list-style: none;
+  margin: 24px 0 0 !important;
+  padding: 0 !important;
+  display: grid;
+  gap: 12px;
+}
+
+.ag-doclist__item {
+  margin: 0 !important;
+  border: 1px solid var(--ag-line);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.ag-doclist__item:hover {
+  border-color: var(--vp-c-text-1);
+  background-color: var(--ag-hover);
+}
+
+.ag-doclist__link {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 24px;
+  text-decoration: none !important;
+}
+
+.ag-doclist__title {
+  font-family: var(--ag-font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--vp-c-text-1);
+}
+
+.ag-doclist__description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--vp-c-text-2);
+}
+
+.ag-doclist__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 24px 20px;
+}
+
+.ag-category__group-title a {
+  text-decoration: none;
+}
+
+/* Tags page */
+.ag-tagindex__group {
+  margin-top: 32px;
+}
+
+.vp-doc .ag-tagindex__title {
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+}
+
+.ag-tagindex__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.vp-doc .ag-tagpage__title {
+  margin-bottom: 4px;
+}
+
+.ag-tagpage__count {
+  margin: 0 !important;
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  color: var(--vp-c-text-3);
+}
+
+/* ---------- Home ---------- */
+
+.ag-home {
+  padding-bottom: 80px;
+}
+
+.ag-hero {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 120px 24px 104px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+/* A faint grid fading out from the centre, in place of the WorldOS page's animated background */
+.ag-hero__grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--vp-c-divider) 1px, transparent 1px),
+    linear-gradient(90deg, var(--vp-c-divider) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: center center;
+  mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+  opacity: 0.8;
+}
+
+.ag-hero__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 880px;
+  text-align: center;
+}
+
+.ag-hero__logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  margin-bottom: 8px;
+}
+
+.ag-hero__title {
+  font-family: var(--ag-font-heading);
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: 6px;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+/* Brackets as pseudo-elements, as on the WorldOS page */
+.ag-hero__title::before,
+.ag-hero__title::after {
+  font-weight: 300;
+}
+
+.ag-hero__title::before {
+  content: '[ ';
+}
+
+.ag-hero__title::after {
+  content: ' ]';
+}
+
+.ag-hero__subtitle {
+  font-family: var(--ag-font-heading);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+.ag-hero__tagline {
+  max-width: 680px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--vp-c-text-2);
+}
+
+.ag-hero__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* The outlined button of agentics.world */
+.ag-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 220px;
+  padding: 12px 28px;
+  border: 3px solid var(--vp-c-text-1);
+  font-family: var(--ag-font-heading);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vp-c-text-1);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.ag-btn:hover,
+.ag-btn--solid {
+  background: var(--vp-c-text-1);
+  color: var(--vp-c-bg);
+}
+
+.ag-btn--solid:hover {
+  background: transparent;
+  color: var(--vp-c-text-1);
+}
+
+.ag-home__section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 88px 24px 0;
+}
+
+.ag-home__heading {
+  margin-bottom: 32px;
+  font-family: var(--ag-font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.ag-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.ag-cards--compact {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ag-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  padding: 28px;
+  border: 1px solid var(--ag-line);
+  color: var(--vp-c-text-1);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.ag-card:hover {
+  border-color: var(--vp-c-text-1);
+  background-color: var(--ag-hover);
+}
+
+.ag-card--compact {
+  padding: 20px;
+}
+
+.ag-card__index {
+  font-family: var(--vp-font-family-mono);
+  font-size: 14px;
+  color: var(--vp-c-text-3);
+}
+
+.ag-card__title {
+  font-family: var(--ag-font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.ag-card--compact .ag-card__title {
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.ag-card__description {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--vp-c-text-2);
+}
+
+.ag-card--compact .ag-card__description {
+  font-size: 13px;
+}
+
+.ag-card__meta {
+  margin-top: auto;
+  padding-top: 8px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  color: var(--vp-c-text-3);
+}
+
+@media (max-width: 960px) {
+  .ag-cards,
+  .ag-cards--compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .ag-hero {
+    padding: 80px 16px 72px;
+  }
+
+  .ag-hero__title {
+    font-size: 30px;
+    letter-spacing: 3px;
+    white-space: nowrap;
+  }
+
+  .ag-hero__subtitle {
+    font-size: 18px;
+  }
+
+  .ag-btn {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .ag-hero__buttons {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .ag-home__section {
+    padding: 64px 16px 0;
+  }
+
+  .ag-cards,
+  .ag-cards--compact {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 420px) {
+  .ag-hero__title {
+    font-size: 24px;
+    letter-spacing: 2px;
+  }
+}
