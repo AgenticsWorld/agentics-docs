@@ -1,6 +1,7 @@
 <script setup>
-// Replaces VitePress's VPNavBarTitle (see the alias in config.js). Same brand as the agentics.world WorldOS top bar:
-// the Agentics mark links to agentics.world, then a slash, then the product logo and name link to the docs home.
+// Replaces VitePress's VPNavBarTitle (see the alias in config.js). Same brand as the agentics.world product top bars:
+// the Agentics mark links to agentics.world, then a slash, then "Docs" links to the docs home. The product a page
+// belongs to is shown at the top of the sidebar and highlighted in the top bar.
 import { useSidebar } from 'vitepress/theme'
 import { withBase } from 'vitepress'
 import { useLang } from '../i18n.js'
@@ -19,7 +20,6 @@ const { t } = useLang()
     </a>
     <span class="ag-brand__slash" aria-hidden="true">/</span>
     <a :href="withBase(t.home)" class="ag-brand__product">
-      <img :src="withBase('/worldos-logo.png')" alt="" width="24" height="24" />
       <span>{{ t.docsTitle }}</span>
     </a>
   </div>
@@ -66,11 +66,6 @@ const { t } = useLang()
   letter-spacing: 0.04em;
   white-space: nowrap;
   color: var(--vp-c-text-1);
-}
-
-.ag-brand__product img {
-  flex: none;
-  border-radius: 6px;
 }
 
 .ag-brand a {

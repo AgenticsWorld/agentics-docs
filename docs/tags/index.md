@@ -1,6 +1,6 @@
 ---
 title: "Tags"
-description: "Browse the Agentics WorldOS docs by tag."
+description: "Browse the docs of every Agentics product by tag."
 editLink: false
 lastUpdated: false
 prev: false

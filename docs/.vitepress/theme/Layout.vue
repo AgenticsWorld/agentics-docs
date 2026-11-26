@@ -1,8 +1,10 @@
 <script setup>
-// The default VitePress layout plus the Agentics pieces: category trail above each doc, tags below it, site footer.
+// The default VitePress layout plus the Agentics pieces: the product at the top of the sidebar, the trail above each
+// doc, tags below it, site footer.
 import DefaultTheme from 'vitepress/theme'
 import DocMeta from './components/DocMeta.vue'
 import DocTags from './components/DocTags.vue'
+import SidebarProduct from './components/SidebarProduct.vue'
 import SiteFooter from './components/SiteFooter.vue'
 
 const { Layout } = DefaultTheme
@@ -10,6 +12,7 @@ const { Layout } = DefaultTheme
 
 <template>
   <Layout>
+    <template #sidebar-nav-before><SidebarProduct /></template>
     <template #doc-before><DocMeta /></template>
     <template #doc-footer-before><DocTags /></template>
     <template #layout-bottom><SiteFooter /></template>

@@ -1,6 +1,6 @@
 /* Agentics look for VitePress, after agentics.world (agentics-front/www-agentics/src/assets/base.css and the
-   WorldOS page): black and white, Montserrat for headings, brand and buttons, Inter for everything people read,
-   the system monospace only for short UI text (nav and footer links, labels). Dark by default, like the WorldOS
+   VideoAgents page): black and white, Montserrat for headings, brand and buttons, Inter for everything people read,
+   the system monospace only for short UI text (nav and footer links, labels). Dark by default, like the product
    pages; the light theme is the same design inverted. */
 
 :root {
@@ -137,24 +137,16 @@ body {
   text-underline-offset: 6px;
 }
 
-/* The Download link is the bordered button of the WorldOS top bar */
-.VPNavBarMenuLink[href$='#download'] {
-  align-self: center;
-  height: 34px;
-  margin-left: 8px;
-  padding: 0 14px !important;
-  line-height: 30px !important;
-  border: 2px solid var(--vp-c-text-1);
-  font-family: var(--ag-font-heading) !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transition: background-color 0.3s ease, color 0.3s ease;
+/* A product menu is highlighted like an active link while one of its pages is shown */
+.VPNavBarMenuGroup.active .text {
+  color: var(--vp-c-text-1) !important;
+  text-decoration: underline;
+  text-underline-offset: 6px;
 }
 
-.VPNavBarMenuLink[href$='#download']:hover {
-  background: var(--vp-c-text-1);
-  color: var(--vp-c-bg) !important;
+.VPMenuLink .link {
+  border-radius: 0;
+  font-size: 13px;
 }
 
 .DocSearch-Button,
@@ -166,6 +158,31 @@ body {
 
 .VPSidebar {
   border-right: 1px solid var(--vp-c-divider);
+}
+
+/* The product at the top of the sidebar (SidebarProduct.vue) */
+.ag-sidebar-product {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 20px;
+  padding: 0 0 16px;
+  border-bottom: 1px solid var(--vp-c-divider);
+  font-family: var(--ag-font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--vp-c-text-1);
+  transition: opacity 0.2s ease;
+}
+
+.ag-sidebar-product:hover {
+  opacity: 0.7;
+}
+
+.ag-sidebar-product img {
+  flex: none;
+  border-radius: 6px;
 }
 
 .VPSidebarItem.level-0 > .item > .link > .text,
@@ -428,7 +445,7 @@ body {
   color: var(--vp-c-text-1);
 }
 
-/* Tag chip, like the status badges on the WorldOS page */
+/* Tag chip, like the status badges on the VideoAgents page */
 .ag-tag {
   display: inline-flex;
   align-items: center;
@@ -585,7 +602,7 @@ body {
   border-bottom: 1px solid var(--vp-c-divider);
 }
 
-/* A faint grid fading out from the centre, in place of the WorldOS page's animated background */
+/* A faint grid fading out from the centre, in place of the product pages' animated backgrounds */
 .ag-hero__grid {
   position: absolute;
   inset: 0;
@@ -615,6 +632,16 @@ body {
   margin-bottom: 8px;
 }
 
+.ag-hero__mark {
+  margin-bottom: 8px;
+  color: var(--vp-c-text-1);
+}
+
+/* "Docs" above a product's name on its docs home */
+.ag-hero__eyebrow {
+  margin: 0 0 -8px;
+}
+
 .ag-hero__title {
   font-family: var(--ag-font-heading);
   font-size: 52px;
@@ -624,7 +651,7 @@ body {
   text-transform: uppercase;
 }
 
-/* Brackets as pseudo-elements, as on the WorldOS page */
+/* Brackets as pseudo-elements, as on the product pages */
 .ag-hero__title::before,
 .ag-hero__title::after {
   font-weight: 300;
@@ -718,6 +745,10 @@ body {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.ag-cards--four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .ag-card {
   display: flex;
   flex-direction: column;
@@ -775,6 +806,122 @@ body {
   color: var(--vp-c-text-3);
 }
 
+/* Product cards on the docs home: one per row while there are few, so each can list its categories */
+.ag-products {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr));
+  gap: 16px;
+}
+
+.ag-product {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+  border: 1px solid var(--ag-line);
+  transition: border-color 0.2s ease;
+}
+
+.ag-product:hover {
+  border-color: var(--ag-line-strong);
+}
+
+.ag-product__head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: fit-content;
+  color: var(--vp-c-text-1);
+  transition: opacity 0.2s ease;
+}
+
+.ag-product__head:hover {
+  opacity: 0.7;
+}
+
+.ag-product__head img {
+  flex: none;
+  border-radius: 10px;
+}
+
+.ag-product__name {
+  font-family: var(--ag-font-heading);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.ag-product__description {
+  max-width: 760px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--vp-c-text-2);
+}
+
+.ag-product__categories {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.ag-product__categories a {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 12px 12px 0;
+  border-bottom: 1px solid var(--vp-c-divider);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--vp-c-text-1);
+  transition: opacity 0.2s ease;
+}
+
+.ag-product__categories a:hover {
+  opacity: 0.7;
+}
+
+.ag-product__index {
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  color: var(--vp-c-text-3);
+}
+
+.ag-product__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.ag-product__more {
+  font-family: var(--ag-font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vp-c-text-1);
+  transition: opacity 0.2s ease;
+}
+
+.ag-product__more:hover {
+  opacity: 0.7;
+}
+
+.ag-product__footer .ag-card__meta {
+  margin-top: 0;
+  padding-top: 0;
+}
+
 @media (max-width: 960px) {
   .ag-cards,
   .ag-cards--compact {
@@ -814,6 +961,14 @@ body {
   .ag-cards,
   .ag-cards--compact {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ag-product {
+    padding: 24px 20px;
+  }
+
+  .ag-product__name {
+    font-size: 22px;
   }
 }
 

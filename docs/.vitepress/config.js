@@ -1,15 +1,14 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vitepress'
-import { sidebar, draftFiles, isBuild, warnUnknownTags } from './lib/content.js'
+import { scanPages, sidebars, productNav, draftFiles, isBuild, warnUnknownTags } from './lib/content.js'
+import { writeRedirects } from './lib/redirects.js'
 import { tagLabel } from './tags.js'
 import { site, links } from './site.js'
 
 if (isBuild) warnUnknownTags()
 
-const description =
-  'Guides for Agentics WorldOS (VideoAgents): build a virtual world with an AI crew, then create episodic video, novels and more inside it.'
-const descriptionZh =
-  'Agentics WorldOS（VideoAgents）使用文档：先由 AI 团队构建虚拟世界，再在世界里创作剧集视频、小说等作品。'
+const description = 'Guides for every Agentics product: install it, learn how it works, and get the most out of it.'
+const descriptionZh = 'Agentics 各产品的使用文档：安装、理解它如何工作，以及用好它的每一项功能。'
 
 // MiniSearch splits text on spaces and punctuation, which leaves a whole Chinese sentence as one word.
 // This tokenizer also cuts runs of CJK characters into overlapping pairs, so 白模 matches 白模系统.
@@ -30,22 +29,22 @@ const tokenize = (text) => {
   return tokens
 }
 
+// One entry per product (a menu of the `nav` links in its index.md), then the tags shared by all products.
 const nav = {
-  en: [
-    { text: 'Tags', link: '/tags/', activeMatch: '^/tags/' },
-    { text: 'Updates', link: links.updates },
-    { text: 'Download', link: links.download, noIcon: true }
-  ],
-  zh: [
-    { text: '标签', link: '/zh/tags/', activeMatch: '^/zh/tags/' },
-    { text: '更新日志', link: links.updates },
-    { text: '下载', link: links.download, noIcon: true }
-  ]
+  en: [...productNav('en'), { text: 'Tags', link: '/tags/', activeMatch: '^/tags/' }],
+  zh: [...productNav('zh'), { text: '标签', link: '/zh/tags/', activeMatch: '^/zh/tags/' }]
 }
 
+// The product each page belongs to, by path relative to docs/, for page titles and share images.
+const productOfPage = (() => {
+  const all = scanPages({ includeDrafts: true })
+  const productPages = new Map(all.filter((p) => p.kind === 'product').map((p) => [`${p.lang}/${p.product}`, p]))
+  return new Map(all.map((p) => [p.relativePath, productPages.get(`${p.lang}/${p.product}`)]))
+})()
+
 export default defineConfig({
-  title: 'WorldOS Docs',
-  titleTemplate: ':title | Agentics WorldOS Docs',
+  title: 'Agentics Docs',
+  titleTemplate: ':title | Agentics Docs',
   description,
   cleanUrls: true,
   lastUpdated: true,
@@ -56,12 +55,9 @@ export default defineConfig({
 
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
-    ['link', { rel: 'apple-touch-icon', href: '/worldos-logo.png' }],
     ['meta', { name: 'theme-color', content: '#000000' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'Agentics' }],
-    ['meta', { property: 'og:image', content: 'https://agentics.world/worldos/media/storyboard-preview.jpg' }],
-    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:site', content: '@AgenticsWorld' }],
     // Same Google Analytics property as agentics.world
     ['script', { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-XHNFECL63F' }],
@@ -79,7 +75,7 @@ export default defineConfig({
       description,
       themeConfig: {
         nav: nav.en,
-        sidebar: { '/': sidebar('en') },
+        sidebar: sidebars('en'),
         editLink: { pattern: `${site.repo}/edit/main/docs/:path`, text: 'Edit this page on GitHub' },
         outline: { level: [2, 3], label: 'On this page' },
         notFound: {
@@ -94,12 +90,12 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       link: '/zh/',
-      title: 'WorldOS 文档',
-      titleTemplate: ':title | Agentics WorldOS 文档',
+      title: 'Agentics 文档',
+      titleTemplate: ':title | Agentics 文档',
       description: descriptionZh,
       themeConfig: {
         nav: nav.zh,
-        sidebar: { '/zh/': sidebar('zh') },
+        sidebar: sidebars('zh'),
         editLink: { pattern: `${site.repo}/edit/main/docs/:path`, text: '在 GitHub 上编辑此页' },
         outline: { level: [2, 3], label: '本页内容' },
         docFooter: { prev: '上一篇', next: '下一篇' },
@@ -122,7 +118,7 @@ export default defineConfig({
 
   themeConfig: {
     socialLinks: [
-      { icon: 'github', link: links.github, ariaLabel: 'Agentics WorldOS on GitHub' },
+      { icon: 'github', link: links.github, ariaLabel: 'Agentics on GitHub' },
       { icon: 'discord', link: links.discord, ariaLabel: 'Discord' },
       { icon: 'x', link: links.x, ariaLabel: 'X' }
     ],
@@ -148,29 +144,49 @@ export default defineConfig({
     }
   },
 
-  // Tag pages come from one template per language (tags/[tag].md); give each its own title and description.
   transformPageData(pageData) {
-    const tag = pageData.params && pageData.params.tag
-    if (!tag) return
     const zh = pageData.relativePath.startsWith('zh/')
-    const label = tagLabel(tag, zh ? 'zh' : 'en')
-    pageData.title = zh ? `标签：${label}` : `Tag: ${label}`
-    pageData.description = zh ? `标记为「${label}」的 WorldOS 文档。` : `Agentics WorldOS docs tagged ${label}.`
+
+    // Tag pages come from one template per language (tags/[tag].md); give each its own title and description.
+    const tag = pageData.params && pageData.params.tag
+    if (tag) {
+      const label = tagLabel(tag, zh ? 'zh' : 'en')
+      pageData.title = zh ? `标签：${label}` : `Tag: ${label}`
+      pageData.description = zh ? `标记为「${label}」的 Agentics 文档。` : `Agentics docs tagged ${label}.`
+      return
+    }
+
+    // A product's pages are titled after it: "Chat commands | VideoAgents Docs", and its home (titled with the
+    // product's name) "VideoAgents Docs | Agentics".
+    const product = productOfPage.get(pageData.relativePath)
+    if (product && pageData.frontmatter.titleTemplate === undefined) {
+      const docs = zh ? `${product.title} 文档` : `${product.title} Docs`
+      const isHome = product.relativePath === pageData.relativePath
+      return { titleTemplate: isHome ? (zh ? ':title 文档 | Agentics' : ':title Docs | Agentics') : `:title | ${docs}` }
+    }
   },
 
-  // Canonical URL and per-page Open Graph tags
+  // Canonical URL and per-page Open Graph tags; a product's pages share the image in its index.md (`image`).
   transformHead({ pageData, title, description }) {
     if (pageData.isNotFound) return []
     const path = pageData.relativePath.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '')
     const url = `${site.url}/${path}`
+    const image = productOfPage.get(pageData.relativePath)?.frontmatter.image
     return [
       ['link', { rel: 'canonical', href: url }],
       ['meta', { property: 'og:url', content: url }],
       ['meta', { property: 'og:title', content: title }],
       ['meta', { property: 'og:description', content: description }],
+      ...(image ? [['meta', { property: 'og:image', content: String(image) }]] : []),
+      ['meta', { name: 'twitter:card', content: image ? 'summary_large_image' : 'summary' }],
       ['meta', { name: 'twitter:title', content: title }],
       ['meta', { name: 'twitter:description', content: description }]
     ]
+  },
+
+  // Pages at the addresses the VideoAgents docs had before products were added (see lib/redirects.js)
+  buildEnd(siteConfig) {
+    writeRedirects(siteConfig.outDir)
   },
 
   vite: {

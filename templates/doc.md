@@ -1,6 +1,6 @@
 ---
-# 复制本文件到 docs/<分类>/<文件名>.md（中文放 docs/zh/<分类>/），文件名用英文小写加连字符，它就是网址：
-#   docs/world/characters.md  →  https://docs.agentics.world/world/characters
+# 复制本文件到 docs/<产品>/<分类>/<文件名>.md（中文放 docs/zh/<产品>/<分类>/），文件名用英文小写加连字符，路径就是网址：
+#   docs/videoagents/world/characters.md  →  https://docs.agentics.world/videoagents/world/characters
 # 以 # 开头的注释行可以删掉。
 
 title: Characters and reference sheets          # 侧栏、卡片和浏览器标题里显示的名字
@@ -33,4 +33,4 @@ Something that costs money or cannot be undone.
 
 ## Related
 
-- [Another doc](/world/scenes)
+- [Another doc](/videoagents/world/scenes)

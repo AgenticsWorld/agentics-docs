@@ -1,6 +1,6 @@
 ---
 title: "标签"
-description: "按标签浏览 Agentics WorldOS 文档。"
+description: "按标签浏览 Agentics 各产品的文档。"
 editLink: false
 lastUpdated: false
 prev: false

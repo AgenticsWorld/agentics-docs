@@ -1,9 +1,9 @@
 ---
 layout: page
 sidebar: false
-title: "Agentics WorldOS 文档"
+title: "Agentics 文档"
 titleTemplate: false
-description: "Agentics WorldOS（VideoAgents）使用文档：安装应用，由 AI 团队构建虚拟世界，再在世界里创作剧集视频、小说等作品。"
+description: "Agentics 各产品的使用文档：安装、理解它如何工作，以及用好它的每一项功能。"
 ---
 
 <DocsHome />

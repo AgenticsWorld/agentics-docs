@@ -1,41 +1,35 @@
 <script setup>
-// Footer of every page, styled like the agentics.world WorldOS footer. Beside the sidebar on wide screens.
+// Footer of every page, styled like the agentics.world product footers. Beside the sidebar on wide screens.
+import { computed } from 'vue'
 import { useSidebar } from 'vitepress/theme'
 import { useData } from 'vitepress'
-import { useLang } from '../i18n.js'
+import { data as pages } from '../docs.data.js'
+import { useLang, byOrder } from '../i18n.js'
 import { links, site } from '../../site.js'
 
 const { hasSidebar } = useSidebar()
 const { lang, t } = useLang()
 const { frontmatter } = useData()
 
-const footerLinks = {
-  en: [
-    { name: 'Agentics', url: links.home },
-    { name: 'WorldOS', url: links.worldos },
-    { name: 'Updates', url: links.updates },
-    { name: 'GitHub', url: links.github },
-    { name: 'Docs source', url: site.repo },
-    { name: 'Discord', url: links.discord },
-    { name: 'X', url: links.x }
-  ],
-  zh: [
-    { name: 'Agentics', url: links.home },
-    { name: 'WorldOS', url: links.worldos },
-    { name: '更新日志', url: links.updates },
-    { name: 'GitHub', url: links.github },
-    { name: '文档源码', url: site.repo },
-    { name: 'Discord', url: links.discord },
-    { name: 'X', url: links.x }
-  ]
-}
+// Agentics, then each product's page on agentics.world (`homepage` in its index.md), then the shared links.
+const footerLinks = computed(() => [
+  { name: 'Agentics', url: links.home },
+  ...pages
+    .filter((p) => p.lang === lang.value && p.kind === 'product' && p.homepage)
+    .sort(byOrder)
+    .map((p) => ({ name: p.title, url: p.homepage })),
+  { name: 'GitHub', url: links.github },
+  { name: lang.value === 'zh' ? '文档源码' : 'Docs source', url: site.repo },
+  { name: 'Discord', url: links.discord },
+  { name: 'X', url: links.x }
+])
 </script>
 
 <template>
   <footer v-if="frontmatter.footer !== false" class="ag-footer" :class="{ 'has-sidebar': hasSidebar }">
     <div class="ag-footer__content">
       <ul class="ag-footer__links">
-        <li v-for="link in footerLinks[lang]" :key="link.url">
+        <li v-for="link in footerLinks" :key="link.url">
           <a :href="link.url" target="_blank" rel="noopener noreferrer">{{ link.name }}</a>
         </li>
       </ul>

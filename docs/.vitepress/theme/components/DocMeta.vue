@@ -1,5 +1,5 @@
 <script setup>
-// Above each doc: the category (and sub-group) it belongs to.
+// Above each doc: the product, category and sub-group it belongs to. Category pages show their product.
 import { computed } from 'vue'
 import { useData, withBase } from 'vitepress'
 import { data as pages } from '../docs.data.js'
@@ -11,11 +11,16 @@ const { t } = useLang()
 const current = computed(() => pages.find((p) => p.path === page.value.relativePath))
 const trail = computed(() => {
   const doc = current.value
-  if (!doc || doc.kind === 'category') return []
-  const same = (p) => p.lang === doc.lang && p.category === doc.category
-  const category = pages.find((p) => same(p) && p.kind === 'category')
-  const group = doc.kind === 'doc' && doc.group ? pages.find((p) => same(p) && p.kind === 'group' && p.group === doc.group) : null
-  return [category, group].filter(Boolean)
+  if (!doc || doc.kind === 'product') return []
+  const same = (p) => p.lang === doc.lang && p.product === doc.product
+  const product = pages.find((p) => same(p) && p.kind === 'product')
+  const category =
+    doc.kind === 'category' ? null : pages.find((p) => same(p) && p.kind === 'category' && p.category === doc.category)
+  const group =
+    doc.kind === 'doc' && doc.group
+      ? pages.find((p) => same(p) && p.kind === 'group' && p.category === doc.category && p.group === doc.group)
+      : null
+  return [product, category, group].filter(Boolean)
 })
 </script>
 

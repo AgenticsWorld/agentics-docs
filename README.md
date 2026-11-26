@@ -1,6 +1,6 @@
-# Agentics WorldOS Docs
+# Agentics Docs
 
-Source of **https://docs.agentics.world**, the documentation of [Agentics WorldOS](https://agentics.world/worldos/) (VideoAgents). Built with [VitePress](https://vitepress.dev) in the agentics.world style; English at `/`, 简体中文 at `/zh/`.
+Source of **https://docs.agentics.world**, the documentation of every [Agentics](https://agentics.world/) product. Each product has its own section: [VideoAgents](https://agentics.world/videoagents/) is at `/videoagents/`. Built with [VitePress](https://vitepress.dev) in the agentics.world style; English at `/`, 简体中文 at `/zh/`.
 
 以下是维护说明。
 
@@ -25,7 +25,7 @@ npm run preview    # 预览 build 的结果
 
 ## 写一篇文档
 
-1. 复制 `templates/doc.md` 到对应分类目录，例如 `docs/world/characters.md`（中文版放 `docs/zh/world/characters.md`）。文件名就是网址：`/world/characters`。
+1. 复制 `templates/doc.md` 到对应产品的分类目录，例如 `docs/videoagents/world/characters.md`（中文版放 `docs/zh/videoagents/world/characters.md`）。路径就是网址：`/videoagents/world/characters`。
 2. 填好 frontmatter：
 
    | 字段 | 说明 |
@@ -36,44 +36,69 @@ npm run preview    # 预览 build 的结果
    | `order` | 分类内排序，小的在前；不写则排在有序号的文档之后，按标题排 |
    | `draft` | `true` 时只在本地 `npm run dev` 显示，不会发布 |
 
-3. 推到 `main`。侧栏、分类页、首页卡片的文档数、标签页都会自动更新，不需要改任何配置。
+3. 推到 `main`。侧栏、分类页、产品首页与文档首页的卡片、标签页都会自动更新，不需要改任何配置。
 
 中英文是两棵独立的目录树，可以只写其中一种语言。右上角的语言切换会跳到另一种语言的同名路径，所以两边用同样的文件名；某篇还没有译文时，切换过去会是 404 页（页面上有返回文档首页的链接）。
 
-一个分类里文档多了，可以建子目录分组：`docs/create/directing/whitebox.md`，子目录里放一个 `index.md`（写 `title`、`order`）作为分组名和分组页，侧栏会显示为可折叠的小组。
+一个分类里文档多了，可以建子目录分组：`docs/videoagents/create/directing/whitebox.md`，子目录里放一个 `index.md`（写 `title`、`order`）作为分组名和分组页，侧栏会显示为可折叠的小组。
 
-**图片**放在 `docs/public/images/<分类>/`，在文中写 `![说明](/images/world/sheet.jpg)`；也可以放在文档旁边用相对路径引用。
+**图片**放在 `docs/public/images/<产品>/<分类>/`，在文中写 `![说明](/images/videoagents/world/sheet.jpg)`；也可以放在文档旁边用相对路径引用。
 
-**站内链接**写不带 `.md` 的绝对路径：`[场景](/world/scenes)`、`[场景](/zh/world/scenes)`。
+**站内链接**写不带 `.md` 的绝对路径：`[场景](/videoagents/world/scenes)`、`[场景](/zh/videoagents/world/scenes)`。
 
 **提示框**：`::: tip`、`::: warning`、`::: danger`、`::: details`，用 `:::` 结束。
 
 ## 目录结构
 
+网站分三层：**产品 → 分类 → 文档**。文档首页列出所有产品，每个产品有自己的文档首页、侧栏和顶栏菜单；标签由所有产品共用。
+
 ```text
 docs/
-  index.md                 首页（分类卡片和相关资源，内容来自各分类的 index.md）
-  <分类>/index.md          分类页：frontmatter 写 title、description、order；正文里的 <CategoryIndex /> 列出本分类文档
-  <分类>/<文档>.md         文档
-  tags/                    标签总览页与每个标签的页面（自动生成，不用改）
-  zh/                      中文，结构同上
-  public/                  原样复制到网站根目录的文件（图标、robots.txt、图片）
+  index.md                       文档首页：每个产品一张卡片（列出它的分类）和 Agentics 链接
+  <产品>/index.md                产品文档首页：frontmatter 写产品名、简介、logo、顶栏菜单、按钮和资源链接，正文是 <ProductHome />
+  <产品>/<分类>/index.md         分类页：frontmatter 写 title、description、order；正文里的 <CategoryIndex /> 列出本分类文档
+  <产品>/<分类>/<文档>.md        文档
+  tags/                          标签总览页与每个标签的页面（自动生成，不用改；所有产品共用）
+  zh/                            中文，结构同上
+  public/                        原样复制到网站根目录的文件（图标、robots.txt、images/<产品>/ 下的图片）
   .vitepress/
-    config.js              站点配置：导航、语言、搜索、SEO
-    tags.js                标签登记表（id、中英文名、分组）
-    site.js                主站、下载、GitHub 等链接
-    lib/content.js         扫描 Markdown 与 frontmatter，生成侧栏、标签页和草稿列表
-    theme/                 agentics.world 风格主题（样式、顶栏、页脚、列表组件）
-templates/doc.md           新文档模板（不会被发布）
+    config.js                    站点配置：导航、语言、搜索、SEO
+    tags.js                      标签登记表（id、中英文名、分组）
+    site.js                      主站、GitHub、Discord、X 等全站链接（产品自己的链接写在产品的 index.md）
+    lib/content.js               扫描 Markdown 与 frontmatter，生成顶栏、侧栏、标签页和草稿列表
+    lib/redirects.js             旧网址跳转页（见下方“旧网址”）
+    theme/                       agentics.world 风格主题（样式、顶栏、页脚、列表组件）
+templates/doc.md                 新文档模板（不会被发布）
 ```
+
+## 新增产品
+
+1. 建 `docs/<产品>/index.md`（和 `docs/zh/<产品>/index.md`），照 `docs/videoagents/index.md` 写 frontmatter：
+
+   | 字段 | 说明 |
+   | --- | --- |
+   | `title` | 产品名：顶栏、文档首页卡片、侧栏顶部，页面标题会是“文档名 \| 产品名 Docs” |
+   | `description` | 一句话简介：文档首页卡片、产品首页主视图、搜索与分享 |
+   | `order` | 在文档首页和顶栏中的顺序 |
+   | `logo` | 产品 logo，放在 `docs/public/images/<产品>/` |
+   | `image` | 本产品所有页面的分享图（og:image），不写则不带分享图 |
+   | `homepage` | 产品在 agentics.world 的页面，显示在页脚 |
+   | `subtitle` | 产品首页主视图的副标题 |
+   | `actions` | 主视图下的按钮（`text`、`link`），第一个为实心 |
+   | `nav` | 顶栏中本产品的下拉菜单（`text`、`link`）；不写则顶栏只是一个指向产品首页的链接 |
+   | `resources` | 产品首页底部的资源卡片（`title`、`description`、`link`） |
+
+   正文写 `<ProductHome />`，并保留 `layout: page` 和 `sidebar: false`。
+2. 在产品目录下建分类（见下一节）。顶栏、侧栏、文档首页卡片和页脚会自动出现，不需要改配置；新增产品后重启 `npm run dev`。
+3. 产品专用的标签加到 `docs/.vitepress/tags.js`，可以新建一个分组。
 
 ## 文档分类
 
-分类按 WorldOS 的产品结构划分：先装好、理解概念，然后按“构建世界 → 在世界中创作”的主流程，再到项目类型、引擎模型、控制台、扩展和参考。下面的主题是建议，按需要写，没写的不会出现在网站上。
+分类属于各自的产品，同名分类在不同产品下互不影响。下面是 VideoAgents 的分类，按它的产品结构划分：先装好、理解概念，然后按“构建世界 → 在世界中创作”的主流程，再到项目类型、引擎模型、控制台、扩展和参考。下面的主题是建议，按需要写，没写的不会出现在网站上。
 
 | # | 目录 | 分类 | 对应产品部分 | 建议主题 |
 | --- | --- | --- | --- | --- |
-| 01 | `getting-started` | Getting Started / 快速开始 | README Quickstart | 什么是 WorldOS；安装桌面应用（Mac / Windows）；从源码运行；选择并登录 Agent 引擎；配置服务商；第一个世界（新建项目、导入小说）；从 VideoAgents 更名说明 |
+| 01 | `getting-started` | Getting Started / 快速开始 | README Quickstart | 什么是 VideoAgents；安装桌面应用（Mac / Windows）；从源码运行；选择并登录 Agent 引擎；配置服务商；第一个世界（新建项目、导入小说） |
 | 02 | `concepts` | Core Concepts / 核心概念 | `agents/README.md`、`agents/WORKFLOW.md` | 世界与作品两层结构；项目与项目文件夹；Agent 团队与 17 个部门；工作流 DAG 与阶段；人工签字点（H 门）；文件而非黑盒（产物、运行记录、版本）；修改师与修改流程 |
 | 03 | `world` | Build the World / 构建世界 | `agents/02`–`06`，声线 `09` | 世界圣经；角色、服装与参考图；声线；生物与坐骑；场景、俯视布局与背景图；道具；画面风格库；3D 白模场景；360° 全景与世界模型（Marble / HunyuanWorld）；音乐库 |
 | 04 | `create` | Create Inside It / 在世界中创作 | `agents/01`、`07`–`12` | 剧本与剧本预览；分镜与动态分镜；白模预演与机位；导演台；提示词与图像、视频生成；对白、音乐与音效；剪辑、字幕与包装；后期工作台；八项质量审核；发布到各平台 |
@@ -83,11 +108,15 @@ templates/doc.md           新文档模板（不会被发布）
 | 08 | `extend` | Plugins, Skills & API / 插件、技能与 API | `plugins/`、技能、`/api/v1` | 安装插件；编写插件（plugin.json、SOUL.md、workflows）；技能（SKILL.md）；示例项目；本地 API 与 OpenAPI；实时事件（SSE） |
 | 09 | `reference` | Reference & Help / 参考与帮助 | `docs/ARCHITECTURE.md`、`.env.example`、`SECURITY.md` | 项目目录结构；配置与环境变量；安全默认值与局域网访问；命令行（`videoagents-web`、`videoagents-api`、`make run-auto`）；术语表；常见问题；问题排查 |
 
-**新增分类**：建目录 `docs/<id>/index.md`（和 `docs/zh/<id>/index.md`），frontmatter 写 `title`、`description`、`order`，正文放 `<CategoryIndex />`。首页卡片和侧栏会自动出现。
+表中目录都在 `docs/videoagents/` 下。
+
+**新增分类**：建目录 `docs/<产品>/<id>/index.md`（和 `docs/zh/<产品>/<id>/index.md`），frontmatter 写 `title`、`description`、`order`，正文放 `<CategoryIndex />`。产品首页卡片和侧栏会自动出现。
 
 ## 标签
 
 分类回答“这篇在哪”，标签回答“还有哪些相关的”：一篇文档只属于一个分类，但可以有多个标签。每篇建议 2–5 个，通常是 **一个难度 + 适用的项目类型 + 主题 + 文档类型**。
+
+标签由所有产品共用：`/tags/beginner` 列出所有产品的入门文档，有多个产品的文档时按产品分组显示。难度、平台、文档类型适用于任何产品；项目类型、世界构建、制作是 VideoAgents 专用的分组。
 
 登记表在 `docs/.vitepress/tags.js`，同时定义中英文显示名和标签页上的分组：
 
@@ -105,9 +134,13 @@ templates/doc.md           新文档模板（不会被发布）
 - 文档底部显示它的标签，分类页和标签页的文档卡片上也会显示。
 - 新标签先加到 `tags.js`；未登记的标签也能用（显示为 id），但 `npm run build` 会打印警告，方便发现拼写错误。
 
+## 旧网址
+
+2026-11-26 之前整个网站只有 VideoAgents 的文档，地址是 `/getting-started/`、`/console/chat-commands` 这样不带产品名的（中文 `/zh/...`）。构建时 `docs/.vitepress/lib/redirects.js` 在每个旧地址生成一个跳转页，把读者带到 `/videoagents/` 下的同一页（保留 `#锚点`）。这些旧分类名（`getting-started`、`concepts`、`world`、`create`、`project-types`、`models`、`console`、`extend`、`reference`）不能再用作产品目录名。
+
 ## 托管与域名
 
 - GitHub Pages（Settings → Pages，来源为 GitHub Actions），自定义域名 `docs.agentics.world`，强制 HTTPS。
 - DNS：Route 53 托管区 `agentics.world`（`Z0796375CVZ17QQT5CB2`）中的 CNAME `docs.agentics.world → agenticsworld.github.io`。
-- agentics.world 的入口在 `agentics-front` 仓库：WorldOS 页顶栏的 **Guide**（`www-agentics/src/components/videoagents/VideoAgentsNav.vue`）和首页页脚 WorldOS 列的 **Guide**（`www-agentics/src/components/FooterSection.vue`），地址都来自 `www-agentics/src/content/videoagents/site.js` 的 `links.docs`。
+- agentics.world 的入口在 `agentics-front` 仓库：VideoAgents 页顶栏的 **Guide**（`www-agentics/src/components/videoagents/VideoAgentsNav.vue`）和首页页脚 VideoAgents 列的 **Guide**（`www-agentics/src/components/FooterSection.vue`），地址都来自 `www-agentics/src/content/videoagents/site.js` 的 `links.docs`。
 - 统计使用与 agentics.world 相同的 Google Analytics（`G-XHNFECL63F`）。

@@ -12,7 +12,11 @@ const { lang, t } = useLang()
 const current = computed(() => pages.find((p) => p.path === page.value.relativePath))
 
 const inCategory = computed(() =>
-  current.value ? pages.filter((p) => p.lang === lang.value && p.category === current.value.category) : []
+  current.value
+    ? pages.filter(
+        (p) => p.lang === lang.value && p.product === current.value.product && p.category === current.value.category
+      )
+    : []
 )
 
 const looseDocs = computed(() => inCategory.value.filter((p) => p.kind === 'doc' && !p.group).sort(byOrder))

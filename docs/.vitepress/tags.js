@@ -1,6 +1,10 @@
 // Tag registry. A doc lists tag ids in its frontmatter (`tags: [whitebox, film]`); this file gives each id its
 // English and Chinese label and the group it is listed under on the Tags page.
 //
+// Tags are shared by every product, so /tags/beginner lists the beginner docs of all of them. Level, platform and
+// doc-type tags suit any product; the project-type, world and production groups are VideoAgents' own. A new product
+// adds its own group and tags here.
+//
 // To add a tag, add an entry here. A tag a doc uses but this file does not list still gets its own page
 // (labelled with the bare id), and `npm run build` prints a warning so typos are caught.
 

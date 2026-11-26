@@ -6,6 +6,6 @@ order: 8
 
 # Plugins, Skills & API
 
-Extend WorldOS: plugins add new roles, workflows and kinds of work; skills teach one agent one craft; the versioned local API with OpenAPI docs and live events lets other tools drive it.
+Extend VideoAgents: plugins add new roles, workflows and kinds of work; skills teach one agent one craft; the versioned local API with OpenAPI docs and live events lets other tools drive it.
 
 <CategoryIndex />

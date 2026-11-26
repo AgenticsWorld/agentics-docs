@@ -6,6 +6,7 @@ import './style.css'
 import Layout from './Layout.vue'
 import CategoryIndex from './components/CategoryIndex.vue'
 import DocsHome from './components/DocsHome.vue'
+import ProductHome from './components/ProductHome.vue'
 import TagIndex from './components/TagIndex.vue'
 import TagPage from './components/TagPage.vue'
 
@@ -16,6 +17,7 @@ export default {
     // Usable in any Markdown page
     app.component('CategoryIndex', CategoryIndex)
     app.component('DocsHome', DocsHome)
+    app.component('ProductHome', ProductHome)
     app.component('TagIndex', TagIndex)
     app.component('TagPage', TagPage)
   }

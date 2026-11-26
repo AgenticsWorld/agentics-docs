@@ -5,7 +5,7 @@ import { useData } from 'vitepress'
 export const strings = {
   en: {
     home: '/',
-    docsTitle: 'WorldOS Docs',
+    docsTitle: 'Docs',
     tags: 'Tags',
     tagsHome: '/tags/',
     allTags: 'All tags',
@@ -14,15 +14,17 @@ export const strings = {
     noTagged: 'No published docs use this tag yet.',
     docCount: (n) => (n === 1 ? '1 doc' : `${n} docs`),
     draft: 'Draft',
+    products: 'Products',
+    openProduct: (name) => `Open the ${name} docs`,
     browse: 'Browse the docs',
     resources: 'Resources',
+    community: 'Agentics',
     tagged: 'Tagged',
-    footerLinks: 'Agentics WorldOS',
-    copyright: '© Agentics 2026 · Agentics WorldOS (VideoAgents) is released under GPL-3.0'
+    copyright: '© Agentics 2026'
   },
   zh: {
     home: '/zh/',
-    docsTitle: 'WorldOS 文档',
+    docsTitle: '文档',
     tags: '标签',
     tagsHome: '/zh/tags/',
     allTags: '全部标签',
@@ -31,11 +33,13 @@ export const strings = {
     noTagged: '还没有已发布的文档使用这个标签。',
     docCount: (n) => `${n} 篇文档`,
     draft: '草稿',
+    products: '产品',
+    openProduct: (name) => `进入 ${name} 文档`,
     browse: '浏览文档',
     resources: '相关资源',
+    community: 'Agentics',
     tagged: '标签',
-    footerLinks: 'Agentics WorldOS',
-    copyright: '© Agentics 2026 · Agentics WorldOS（VideoAgents）基于 GPL-3.0 开源'
+    copyright: '© Agentics 2026'
   }
 }
 
