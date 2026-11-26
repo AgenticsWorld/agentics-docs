@@ -1,8 +1,7 @@
 ---
 # 产品的文档首页。网站上与这个产品有关的内容都来自这里的 frontmatter，分类就是本文件旁边的各个目录。
 # 英文版是 docs/videoagents/index.md。
-layout: page
-sidebar: false
+layout: page                           # 宽版页面，左侧显示本产品的侧栏
 title: VideoAgents                     # 产品名：顶栏、文档首页卡片、侧栏、页面标题（“… | VideoAgents 文档”）
 description: "让一支 AI 团队把你的创意做成剧集视频。安装应用，构建故事所在的世界，再在世界里创作剧集、小说等作品。"
 order: 1                               # 在文档首页和顶栏中的产品顺序

@@ -21,7 +21,7 @@ npm run build      # 和线上一样的构建；未登记的标签会在这里�
 npm run preview    # 预览 build 的结果
 ```
 
-新增或删除文件后侧栏不会自动更新，重启 `npm run dev` 即可。
+新增、删除文档，或改了文档的 `title`、`order`、`draft` 后，`npm run dev` 会自动重启一次，几秒后侧栏和顶栏就是新的（`lib/dev-restart.js`）。
 
 ## 写一篇文档
 
@@ -40,7 +40,7 @@ npm run preview    # 预览 build 的结果
 
 中英文是两棵独立的目录树，可以只写其中一种语言。右上角的语言切换会跳到另一种语言的同名路径，所以两边用同样的文件名；某篇还没有译文时，切换过去会是 404 页（页面上有返回文档首页的链接）。
 
-一个分类里文档多了，可以建子目录分组：`docs/videoagents/create/directing/whitebox.md`，子目录里放一个 `index.md`（写 `title`、`order`）作为分组名和分组页，侧栏会显示为可折叠的小组。
+一个分类里文档多了，可以建子目录分组：`docs/videoagents/create/directing/whitebox.md`，子目录里放一个 `index.md`（写 `title`、`order`）作为分组名和分组页，侧栏里显示为分类下的一个小节（分组页是小节的第一项“Overview / 概览”）。
 
 **图片**放在 `docs/public/images/<产品>/<分类>/`，在文中写 `![说明](/images/videoagents/world/sheet.jpg)`；也可以放在文档旁边用相对路径引用。
 
@@ -67,6 +67,8 @@ docs/
     site.js                      主站、GitHub、Discord、X 等全站链接（产品自己的链接写在产品的 index.md）
     lib/content.js               扫描 Markdown 与 frontmatter，生成顶栏、侧栏、标签页和草稿列表
     lib/redirects.js             旧网址跳转页（见下方“旧网址”）
+    lib/dev-restart.js           本地预览时，新增、删除文档或改了标题和顺序后自动重启，让侧栏保持最新
+    lib/llms.js                  llms.txt、llms-full.txt 与每页的 Markdown 副本（见下方“站点地图与 llms.txt”）
     theme/                       agentics.world 风格主题（样式、顶栏、页脚、列表组件）
 templates/doc.md                 新文档模板（不会被发布）
 ```
@@ -88,8 +90,8 @@ templates/doc.md                 新文档模板（不会被发布）
    | `nav` | 顶栏中本产品的下拉菜单（`text`、`link`）；不写则顶栏只是一个指向产品首页的链接 |
    | `resources` | 产品首页底部的资源卡片（`title`、`description`、`link`） |
 
-   正文写 `<ProductHome />`，并保留 `layout: page` 和 `sidebar: false`。
-2. 在产品目录下建分类（见下一节）。顶栏、侧栏、文档首页卡片和页脚会自动出现，不需要改配置；新增产品后重启 `npm run dev`。
+   正文写 `<ProductHome />`，并保留 `layout: page`（宽版页面，左侧照常显示本产品的侧栏）。
+2. 在产品目录下建分类（见下一节）。顶栏、侧栏、文档首页卡片和页脚会自动出现，不需要改配置。
 3. 产品专用的标签加到 `docs/.vitepress/tags.js`，可以新建一个分组。
 
 ## 文档分类
@@ -111,6 +113,8 @@ templates/doc.md                 新文档模板（不会被发布）
 表中目录都在 `docs/videoagents/` 下。
 
 **新增分类**：建目录 `docs/<产品>/<id>/index.md`（和 `docs/zh/<产品>/<id>/index.md`），frontmatter 写 `title`、`description`、`order`，正文放 `<CategoryIndex />`。产品首页卡片和侧栏会自动出现。
+
+**侧栏**：每个分类是一节，产品首页、分类页和文档页左侧都有。所有小节默认展开，点小节标题（或右侧箭头）就收起或展开；分类页本身是这一节的第一项“Overview / 概览”。打开很靠下的文档时，侧栏会自动滚到当前文档。还没有文档的分类显示为一个直接打开分类页的标题。
 
 ## 标签
 
@@ -137,6 +141,21 @@ templates/doc.md                 新文档模板（不会被发布）
 ## 旧网址
 
 2026-11-26 之前整个网站只有 VideoAgents 的文档，地址是 `/getting-started/`、`/console/chat-commands` 这样不带产品名的（中文 `/zh/...`）。构建时 `docs/.vitepress/lib/redirects.js` 在每个旧地址生成一个跳转页，把读者带到 `/videoagents/` 下的同一页（保留 `#锚点`）。这些旧分类名（`getting-started`、`concepts`、`world`、`create`、`project-types`、`models`、`console`、`extend`、`reference`）不能再用作产品目录名。
+
+## 站点地图与 llms.txt
+
+这些索引文件都在构建时自动生成，不用手写，新增、删除或改动文档后随下一次发布更新：
+
+| 地址 | 内容 | 来源 |
+| --- | --- | --- |
+| `/sitemap.xml` | 所有页面，带中英文对应页与最后更新时间（取自 git 提交时间） | VitePress 内置（`config.js` 的 `sitemap`），`robots.txt` 里登记了它 |
+| `/llms.txt` | 英文文档索引：每个产品、分类和文档的标题与一句话简介，链接指向页面的 Markdown 版本（[llmstxt.org](https://llmstxt.org) 格式） | `lib/llms.js` |
+| `/llms-full.txt` | 全部英文文档的全文，按侧栏顺序拼成一个 Markdown 文件 | `lib/llms.js` |
+| `/<产品>/llms.txt`、`/<产品>/llms-full.txt` | 只含一个产品的索引与全文 | `lib/llms.js` |
+| `/zh/llms.txt` 等 | 中文文档的同样几份文件 | `lib/llms.js` |
+| `/<页面>.md` | 每个页面的 Markdown 版本，例如 `/videoagents/world/characters.md`，分类页是 `/videoagents/world/index.md`；页面 `<head>` 里有指向它的 `<link rel="alternate" type="text/markdown">` | `lib/llms.js` |
+
+Markdown 版本就是源文件去掉 frontmatter：站内链接改成指向 `.md` 版本的绝对地址，图片改成绝对地址，`<CategoryIndex />`、`<ProductHome />` 换成它们显示的文档列表。所以标题、`description` 和正文本身写清楚，这些文件就跟着清楚；草稿不会出现在里面。
 
 ## 托管与域名
 

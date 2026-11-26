@@ -49,7 +49,7 @@ Good to know:
    - Set event subscriptions to the long-connection mode and subscribe to **Receive messages** (`im.message.receive_v1`).
    - Set callback subscriptions to the long-connection mode as well. The buttons on confirmation and sign-off cards need it.
 3. Grant the `im:message` permission. To also receive images and videos, grant `im:resource`.
-4. In the console, open **⚙️ → Advanced → Mobile Messages**. In the **✈️ Feishu** section, enter the App ID and App Secret, pick the platform (Feishu or Lark) and click **Verify & link**. The machine running the service needs the Feishu SDK: `pip install lark-oapi`.
+4. In the console, open **⚙️ → Advanced → Mobile Messages**. In the **✈️ Feishu** section, enter the App ID and App Secret, pick the platform (Feishu or Lark) and click **Verify & link**. The Feishu SDK comes with the desktop app and with a standard install from source; if you see "Feishu SDK not installed", run `pip install lark-oapi` in the Python environment that runs the service.
 5. In Feishu, search for your app's name and send the bot any message. The system can only push replies to you after it has received a message from you.
 
 ### Send commands

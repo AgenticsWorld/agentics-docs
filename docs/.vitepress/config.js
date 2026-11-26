@@ -2,6 +2,8 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vitepress'
 import { scanPages, sidebars, productNav, draftFiles, isBuild, warnUnknownTags } from './lib/content.js'
 import { writeRedirects } from './lib/redirects.js'
+import { writeLlms, markdownCopyUrl } from './lib/llms.js'
+import { restartOnPageChanges } from './lib/dev-restart.js'
 import { tagLabel } from './tags.js'
 import { site, links } from './site.js'
 
@@ -41,6 +43,14 @@ const productOfPage = (() => {
   const productPages = new Map(all.filter((p) => p.kind === 'product').map((p) => [`${p.lang}/${p.product}`, p]))
   return new Map(all.map((p) => [p.relativePath, productPages.get(`${p.lang}/${p.product}`)]))
 })()
+
+// The Markdown copy of each product page (written by lib/llms.js), linked from the page's head. The docs homes
+// link to the llms.txt index of their language instead.
+const markdownOfPage = new Map([
+  ...scanPages().map((p) => [p.relativePath, markdownCopyUrl(p)]),
+  ['index.md', `${site.url}/llms.txt`],
+  ['zh/index.md', `${site.url}/zh/llms.txt`]
+])
 
 export default defineConfig({
   title: 'Agentics Docs',
@@ -172,8 +182,12 @@ export default defineConfig({
     const path = pageData.relativePath.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '')
     const url = `${site.url}/${path}`
     const image = productOfPage.get(pageData.relativePath)?.frontmatter.image
+    const markdown = markdownOfPage.get(pageData.relativePath)
     return [
       ['link', { rel: 'canonical', href: url }],
+      ...(markdown
+        ? [['link', { rel: 'alternate', type: markdown.endsWith('.txt') ? 'text/plain' : 'text/markdown', href: markdown }]]
+        : []),
       ['meta', { property: 'og:url', content: url }],
       ['meta', { property: 'og:title', content: title }],
       ['meta', { property: 'og:description', content: description }],
@@ -184,12 +198,17 @@ export default defineConfig({
     ]
   },
 
-  // Pages at the addresses the VideoAgents docs had before products were added (see lib/redirects.js)
+  // Pages at the addresses the VideoAgents docs had before products were added (see lib/redirects.js), and the
+  // llms.txt files and Markdown copies of the pages for AI tools (see lib/llms.js). The sitemap (sitemap.xml, with
+  // each page's English/Chinese pair and last-updated date) comes from VitePress itself.
   buildEnd(siteConfig) {
     writeRedirects(siteConfig.outDir)
+    writeLlms(siteConfig.outDir)
   },
 
   vite: {
+    // `npm run dev` restarts itself when pages are added or removed, so the sidebars stay complete (lib/dev-restart.js)
+    plugins: [restartOnPageChanges(fileURLToPath(import.meta.url))],
     resolve: {
       // The brand in the top bar holds two links (agentics.world and the docs home), which the default
       // title component (a single link) cannot, so it is replaced.

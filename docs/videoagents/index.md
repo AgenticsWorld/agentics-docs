@@ -1,8 +1,7 @@
 ---
 # A product's docs home. Everything about the product that the site shows comes from this frontmatter;
 # the categories are the folders next to this file. The Chinese version is docs/zh/videoagents/index.md.
-layout: page
-sidebar: false
+layout: page                           # full-width page beside the product's sidebar
 title: VideoAgents                     # product name: top bar, home page card, sidebar, page titles ("… | VideoAgents Docs")
 description: "Turn an idea into episodic video with a crew of AI agents. Install the app, build the world your story lives in, then make series, novels and more inside it."
 order: 1                               # position among the products on the docs home and in the top bar

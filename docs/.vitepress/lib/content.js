@@ -150,7 +150,19 @@ function sidebarItem(page) {
   return { text: page.draft ? `${page.title} <span class="ag-draft">Draft</span>` : page.title, link: page.url }
 }
 
-/** Sidebar of one product: one collapsible section per category, opened on the section of the current page. */
+const overviewLabel = { en: 'Overview', zh: '概览' }
+
+/**
+ * A sidebar section that opens and closes when its title is clicked. VitePress toggles a section on a title click
+ * only when the section has no link of its own, so the section's page (a category or sub-group page) becomes the
+ * first entry inside it, labelled "Overview". Every section starts open; a reader can close the ones they don't need.
+ */
+function section(lang, title, url, children) {
+  const overview = url ? [{ text: overviewLabel[lang] || overviewLabel.en, link: url }] : []
+  return { text: title, collapsed: false, items: [...overview, ...children] }
+}
+
+/** Sidebar of one product: one section per category (and per sub-group inside it), all open. */
 export function sidebar(lang, product) {
   const pages = scanPages().filter((page) => page.lang === lang && page.product === product)
   return pages
@@ -165,21 +177,18 @@ export function sidebar(lang, product) {
         .map((name) => {
           const head = inCategory.find((page) => page.kind === 'group' && page.group === name)
           const docs = inCategory.filter((page) => page.kind === 'doc' && page.group === name).sort(byOrder)
-          return {
-            title: head ? head.title : prettify(name),
-            order: head ? head.order : Infinity,
-            item: { text: head ? head.title : prettify(name), link: head?.url, collapsed: true, items: docs.map(sidebarItem) }
-          }
+          const title = head ? head.title : prettify(name)
+          return { title, order: head ? head.order : Infinity, item: section(lang, title, head?.url, docs.map(sidebarItem)) }
         })
-        .filter((group) => group.item.items.length || group.item.link)
+        .filter((group) => group.item.items.length)
         .sort(byOrder)
         .map((group) => group.item)
 
       const children = [...items, ...groups]
-      // An empty `items` list keeps a category without docs a section header of its own; without it VitePress
-      // merges consecutive plain links into one untitled section.
+      // A category without docs stays a plain link to its page. The empty `items` list keeps it a section header of
+      // its own; without it VitePress merges consecutive plain links into one untitled section.
       return children.length
-        ? { text: category.title, link: category.url, collapsed: true, items: children }
+        ? section(lang, category.title, category.url, children)
         : { text: category.title, link: category.url, items: [] }
     })
 }
